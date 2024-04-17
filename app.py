@@ -1,10 +1,30 @@
-import streamlit as st
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
+from flask import Flask, request
+from flask_cors import CORS
 
+app = Flask(__name__)
+CORS(app)
+
+
+@app.route("/")
+def hello_world():
+    return 'Hello world'
+
+
+@app.route("/upload", methods=['POST'])
+def upload_file():
+    if request.method == 'POST':
+        files = request.files.getlist('file')
+
+        if len(files) < 1:
+            return 'No files uploaded'
+        
+        text = get_pdf_text(files)
+        return text
 
 def get_pdf_text(pdf_docs):
     text = ""
@@ -31,41 +51,6 @@ def get_vectorstore(text_chunks):
     return vectorstore
 
 
-def main():
-    load_dotenv()
-    st.set_page_config(page_title="Chat with multiple PDFs",
-                       page_icon=":books:")
-    # st.write(css, unsafe_allow_html=True)
-
-    if "conversation" not in st.session_state:
-        st.session_state.conversation = None
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = None
-
-    st.header("Chat with multiple PDFs :books:")
-    user_question = st.text_input("Ask a question about your documents:")
-    # if user_question:
-    #     handle_userinput(user_question)
-
-    with st.sidebar:
-        st.subheader("Your documents")
-        pdf_docs = st.file_uploader(
-            "Upload your PDFs here and click on 'Process'", accept_multiple_files=True)
-        with st.spinner("Processing"):
-            if st.button("Process"):
-                # get pdf text
-                raw_text = get_pdf_text(pdf_docs)
-
-                #  get the text chunks
-                text_chunks = get_text_chunks(raw_text)
-
-                # create vector store
-                # vectorstore = get_vectorstore(text_chunks)
-
-                # # create conversation chain
-                # st.session_state.conversation = get_conversation_chain(
-                #     vectorstore)
-
 
 if __name__ == '__main__':
-    main()
+    app.run(debug=True, host='0.0.0.0')
