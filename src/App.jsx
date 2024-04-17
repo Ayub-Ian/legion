@@ -42,7 +42,7 @@ function App() {
         </div>
 
         <div className='chat'>
-          <p>Chat with multiple pdfs</p>
+          <p className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight dark:text-slate-200">Chat with multiple pdfs</p>
           {text && <p>{text}</p>}
         </div>
 
