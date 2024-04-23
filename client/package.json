@@ -13,6 +13,13 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@supabase/ssr": "^0.3.0",
     "@supabase/supabase-js": "^2.42.4",
+    "@uppy/core": "^3.10.1",
+    "@uppy/dashboard": "^3.8.1",
+    "@uppy/drag-drop": "^3.1.0",
+    "@uppy/file-input": "^3.1.1",
+    "@uppy/progress-bar": "^3.1.1",
+    "@uppy/react": "^3.3.0",
+    "@uppy/tus": "^3.5.4",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "input-otp": "^1.2.4",
@@ -22,7 +29,8 @@
     "react-dom": "^18",
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.2.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "tus-js-client": "^4.1.0"
   },
   "devDependencies": {
     "eslint": "^8",

@@ -4,7 +4,7 @@ import UserFileUpload from "@/components/upload/upload";
 import { createClient } from "@/lib/supabase/server";
 import React from "react";
 
-export default function UserHomePage() {
+export default async function UserHomePage() {
     const supabase = createClient()
 
    
