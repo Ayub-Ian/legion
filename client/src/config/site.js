@@ -1,5 +1,5 @@
 export const siteConfig = {
-    name: "Sypha",
+    name: "Notecraft",
     url: "https://ui.shadcn.com",
     ogImage: "https://ui.shadcn.com/og.jpg",
     description:

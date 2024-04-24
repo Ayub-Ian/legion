@@ -14,7 +14,7 @@ export default function UserFileUpload() {
   const [files, setFiles] = React.useState([]);
   const [uploading, setUploading] = React.useState(false);
   const bucketName = 'uppy'
-  const folderName = 'test'
+  const folderName = 'notecraft'
   const projectId = "aobikkvpxwlayyrgkavf"
   const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFvYmlra3ZweHdsYXl5cmdrYXZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTM3MDE3NDEsImV4cCI6MjAyOTI3Nzc0MX0.0hbABoIsmBJFs56iWCrlyxcRUWNq2BWX7S5BVxW2Ze4"
   const supabaseUploadURL = `https://${projectId}.supabase.co/storage/v1/upload/resumable`
@@ -55,56 +55,29 @@ export default function UserFileUpload() {
     console.error("Error uploading file:", file?.name, error);
   });
 
+  uppy.on("upload-success", async (file) => {
+    console.log("Uploaded file:", file)
+    try {
+      const { error } = await supabase.from("chatbots").insert({
+                      name: file.name,
+                      document_url: file.meta.objectName,
+                      c_type: "DOCUMENT"
+                      })
+                  if (error) throw error
+    } catch (error) {
+      console.log({error})
+      
+    }
+  })
 
   uppy.on('complete', (result) => {
+
     console.log('Upload complete! We’ve uploaded these files:', result.successful)
   })
 
- 
-  // const uploadFile = async (event) => {
-  //   setUploading(true);
-  //   try {
-  //     if (!event.target.files || event.target.files.length === 0) {
-  //       throw new Error("You must select a file to upload.");
-  //     }
-
-
-
-  //     const file = event.target.files[0];
-  //     const [name, fileExt] = file.name.split(".");
-  //     const filePath = `test-notecraft-${Math.random()}.${fileExt}`;
-
-      
-
-  //     const { error: uploadError, data: { path } } = await supabase.storage
-  //       .from("library")
-  //       .upload(filePath, file);
-  //     if (uploadError) {
-  //       throw uploadError;
-  //     }
-
-  //     if (path) {
-  //       try {
-  //           const { error } = await supabase.from("chatbots").insert({
-  //               name,
-  //               document_url: path,
-  //               c_type: "DOCUMENT",
-  //               updated_at: new Date().toISOString()
-  //           })
-  //           if (error) throw error
-  //       } catch (error) {
-  //           console.log({error})
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error("Error", error);
-  //   } finally {
-  //     setUploading(false);
-  //   }
-  // };
-
+  
   return (
-    <>
+    <div className="max-h-[9.5rem] overflow-scroll">
     <Dashboard uppy={uppy} />
       {/* <label
         htmlFor="file-upload"
@@ -126,6 +99,6 @@ export default function UserFileUpload() {
         </div>
         { uploading && <Icons.spinner className="animate-spin transition-all"/>}
       </label> */}
-    </>
+    </div>
   );
 }
