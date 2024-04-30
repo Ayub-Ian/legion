@@ -7,6 +7,8 @@ import Uppy from "@uppy/core";
 import Tus from '@uppy/tus';
 import '@uppy/core/dist/style.min.css';
 import '@uppy/dashboard/dist/style.min.css';
+import { useMutation } from "@tanstack/react-query";
+
 
 
 
@@ -29,6 +31,20 @@ export default function UserFileUpload() {
     allowedMetaFields: ['bucketName', 'objectName', 'contentType', 'cacheControl'],
   }));
 
+  const { mutate, isLoading } = useMutation({
+    mutationFn: async ({
+      document_url
+    }) => {
+      const response = await fetch("/api/chat/create", {
+        method: "POST",
+        body: JSON.stringify({document_url: document_url})
+        
+      });
+      return response.data;
+    },
+  });
+
+
   
   
   uppy.on('file-added', (file) => {
@@ -48,6 +64,7 @@ export default function UserFileUpload() {
   });
 
   uppy.on("upload", (data) => {
+    setUploading(true)
     console.log("Upload started with data:", data);
   });
 
@@ -64,6 +81,17 @@ export default function UserFileUpload() {
                       c_type: "DOCUMENT"
                       })
                   if (error) throw error
+                  mutate({document_url: file.meta.objectName}, {
+                    onSuccess: ({ chat_id }) => {
+                      // toast.success("Chat created!");
+                      // router.push(`/chat/${chat_id}`);
+                      console.log("Sucessful pushing to pinecone")
+                    },
+                    onError: (err) => {
+                      // toast.error("Error creating chat");
+                      console.error("Error uploading to pinecone",err);
+                    },
+                  });
     } catch (error) {
       console.log({error})
       
@@ -71,7 +99,7 @@ export default function UserFileUpload() {
   })
 
   uppy.on('complete', (result) => {
-
+    setUploading(false)
     console.log('Upload complete! We’ve uploaded these files:', result.successful)
   })
 
@@ -79,6 +107,9 @@ export default function UserFileUpload() {
   return (
     <div className="max-h-[9.5rem] overflow-scroll">
     <Dashboard uppy={uppy} />
+    <div className="inset-0 absolute bg-black/20">
+      <p>Loading...</p>
+    </div>
       {/* <label
         htmlFor="file-upload"
         className="flex flex-col items-start justify-between p-4 px-4 h-[9.5rem] rounded-xl border cursor-pointer flex-grow flex-basis-0 duration-150 ease-in transition-border border-border3 hover:border-textGray3 hover:scale-[1.015] shadow-feint"

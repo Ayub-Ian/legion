@@ -1,10 +1,12 @@
-import { PDFLoader } from "langchain/document_loaders/fs/pdf";
+import { WebPDFLoader } from "langchain/document_loaders/web/pdf";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
-import { env } from "./config";
 
-export async function getChunkedDocsFromPDF() {
+export async function getChunkedDocsFromPDF(blob) {
   try {
-    const loader = new PDFLoader(env.PDF_PATH);
+    
+    const loader = new WebPDFLoader(blob, {
+      
+    });
     const docs = await loader.load();
 
     // From the docs https://www.pinecone.io/learn/chunking-strategies/

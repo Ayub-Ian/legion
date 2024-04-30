@@ -1,6 +1,5 @@
 import { Pinecone } from '@pinecone-database/pinecone'
 
-import { env } from "./config";
 import { delay } from "./utils";
 
 let pineconeClientInstance = null;
@@ -18,7 +17,7 @@ async function createIndex(client, indexName) {
     console.log(
       `Waiting for ${process.env.INDEX_INIT_TIMEOUT} seconds for index initialization to complete...`
     );
-    await delay(env.INDEX_INIT_TIMEOUT);
+    await delay(process.env.INDEX_INIT_TIMEOUT);
     console.log("Index created !!");
   } catch (error) {
     console.error("error ", error);
@@ -31,10 +30,10 @@ async function initPineconeClient() {
   try {
     const pineconeClient = new Pinecone();
     await pineconeClient.init({
-      apiKey: env.PINECONE_API_KEY,
-      environment: env.PINECONE_ENVIRONMENT,
+      apiKey: process.env.PINECONE_API_KEY,
+      environment: process.env.PINECONE_ENVIRONMENT,
     });
-    const indexName = env.PINECONE_INDEX_NAME;
+    const indexName = process.env.PINECONE_INDEX_NAME;
 
     const existingIndexes = await pineconeClient.listIndexes();
 
