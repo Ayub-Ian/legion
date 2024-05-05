@@ -1,10 +1,10 @@
-import { WebPDFLoader } from "langchain/document_loaders/web/pdf";
+import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 
 export async function getChunkedDocsFromPDF(blob) {
   try {
     
-    const loader = new WebPDFLoader(blob, {
+    const loader = new PDFLoader("/Users/ayubian/Downloads/Ian_Ayub_Resume.pdf", {
       
     });
     const docs = await loader.load();

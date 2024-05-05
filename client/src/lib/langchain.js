@@ -3,9 +3,9 @@ import { getVectorStore } from "./vector-store";
 import { getPineconeClient } from "./pinecone-client";
 import {
   StreamingTextResponse,
-  experimental_StreamData,
+  StreamData,
   LangChainStream,
-} from "ai-stream-experimental";
+} from "ai";
 import { streamingModel, nonStreamingModel } from "./llm";
 import { STANDALONE_QUESTION_TEMPLATE, QA_TEMPLATE } from "./prompt-templates";
 
@@ -16,10 +16,8 @@ export async function callChain({ question, chatHistory }) {
     const sanitizedQuestion = question.trim().replaceAll("\n", " ");
     const pineconeClient = await getPineconeClient();
     const vectorStore = await getVectorStore(pineconeClient);
-    const { stream, handlers } = LangChainStream({
-      experimental_streamData: true,
-    });
-    const data = new experimental_StreamData();
+    const { stream, handlers } = LangChainStream();
+    const data = new StreamData();
 
     const chain = ConversationalRetrievalQAChain.fromLLM(
       streamingModel,

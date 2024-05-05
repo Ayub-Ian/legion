@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@langchain/community": "^0.0.54",
     "@langchain/openai": "^0.0.28",
     "@langchain/pinecone": "^0.0.4",
     "@pinecone-database/pinecone": "^2.2.0",
@@ -39,7 +40,8 @@
     "react-dom": "^18",
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.2.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "eslint": "^8",

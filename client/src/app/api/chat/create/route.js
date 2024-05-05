@@ -14,7 +14,7 @@ export async function POST(req,res) {
     const fileUrl = `${process.env.SUPABASE_STORAGE_URL}/${document_url}`
     const response = await fetch(fileUrl);
     const blob = await response.blob();
-    pineconePrepareDoc(blob)
+    await pineconePrepareDoc(blob)
   
     return NextResponse.json(
       {

@@ -28,16 +28,23 @@ async function createIndex(client, indexName) {
 // Initialize index and ready to be accessed.
 async function initPineconeClient() {
   try {
-    const pineconeClient = new Pinecone();
-    await pineconeClient.init({
+    const pineconeClient = new Pinecone({
       apiKey: process.env.PINECONE_API_KEY,
-      environment: process.env.PINECONE_ENVIRONMENT,
     });
+ 
     const indexName = process.env.PINECONE_INDEX_NAME;
 
-    const existingIndexes = await pineconeClient.listIndexes();
+    const indexList = await pineconeClient.listIndexes();
+    const existingIndexes = (indexList, name) => {
+      for (let i = 0; i < indexList.indexes.length; i++) {
+        if (indexList.indexes[i].name === name) {
+            return true;
+        }
+    }
+    return false;
+    }
 
-    if (!existingIndexes.includes(indexName)) {
+    if (!existingIndexes(indexList, indexName)) {
       createIndex(pineconeClient, indexName);
     } else {
       console.log("Your index already exists. nice !!");
@@ -57,3 +64,5 @@ export async function getPineconeClient() {
 
   return pineconeClientInstance;
 }
+
+

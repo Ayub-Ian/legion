@@ -22,7 +22,13 @@ export default function UserFileUpload() {
   const supabaseUploadURL = `https://${projectId}.supabase.co/storage/v1/upload/resumable`
 
   const supabase = createClient();
-  const [uppy] = React.useState(() => new Uppy().use(Tus, {
+  const [uppy] = React.useState(() => new Uppy({
+    allowMultipleUploadBatches: false,
+    restrictions: {
+      allowedFileTypes: ['.pdf'],
+      maxNumberOfFiles: 5
+    }
+  }).use(Tus, {
     endpoint: supabaseUploadURL,
     headers: {
       authorization: `Bearer ${token}`,
@@ -107,9 +113,21 @@ export default function UserFileUpload() {
   return (
     <div className="max-h-[9.5rem] overflow-scroll">
     <Dashboard uppy={uppy} />
-    <div className="inset-0 absolute bg-black/20">
-      <p>Loading...</p>
-    </div>
+    {uploading && (
+       <div className="inset-0 absolute text-white flex items-center justify-center z-50 bg-black/60">
+       <div className="flex flex-col items-center gap-2">
+       
+       <div className="loader">
+         <div className="rect1"></div>
+         <div className="rect2"></div>
+         <div className="rect3"></div>
+         <div className="rect4"></div>
+       </div>
+       <p className="text-center font-medium">Spilling into notecraft..</p>
+       </div>
+     </div>
+    )}
+   
       {/* <label
         htmlFor="file-upload"
         className="flex flex-col items-start justify-between p-4 px-4 h-[9.5rem] rounded-xl border cursor-pointer flex-grow flex-basis-0 duration-150 ease-in transition-border border-border3 hover:border-textGray3 hover:scale-[1.015] shadow-feint"
