@@ -25,7 +25,7 @@ export default async function AppLayout({ children }) {
             <TopHeaderNav />
             <Sidebar />
             <main className="p-4 sm:ml-64">
-                <div className="mt-14 h-full w-full flex flex-col">
+                <div className="my-auto h-full w-full flex flex-col">
                     {children}
                 </div>
             </main>

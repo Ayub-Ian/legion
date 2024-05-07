@@ -22,12 +22,12 @@ export default function Sidebar() {
                 <DropdownMenuTrigger asChild>
                   <div className="hover:bg-gray-100 p-2 rounded-md cursor-pointer ">
                     <div className="flex items-center gap-2">
-                      <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center">
+                      <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center">
                         <Icons.user className="text-white" />
                       </div>
                       <div className="flex flex-col items-start">
-                        <p className="ext-sm font-medium text-left whitespace-nowrap">Ayub Ian</p>
-                        <p className="text-xs font-medium text-gray-600"> iayub.mia@gmail.com</p>
+                        <p className="text-sm font-medium text-left whitespace-nowrap">Ayub Ian</p>
+                        <p className="text-xs leading-normal text-content_color_secondary"> iayub.mia@gmail.com</p>
                       </div>
                     </div>
                   </div>

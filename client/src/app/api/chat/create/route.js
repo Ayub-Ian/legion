@@ -11,10 +11,16 @@ export async function POST(req,res) {
     try{
     const body = await req.json();
     const { document_url } = body
-    const fileUrl = `${process.env.SUPABASE_STORAGE_URL}/${document_url}`
-    const response = await fetch(fileUrl);
-    const blob = await response.blob();
-    await pineconePrepareDoc(blob)
+    const fileUrl = `${process.env.SUPABASE_STORAGE_URL}/${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET_NAME}/${document_url}`
+    const { data, error } = await supabase
+.storage
+.from(`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE_BUCKET_NAME}`)
+.download(document_url)
+
+
+    // const response = await fetch(fileUrl);
+    // const blob = await response.blob();
+    await pineconePrepareDoc(data)
   
     return NextResponse.json(
       {

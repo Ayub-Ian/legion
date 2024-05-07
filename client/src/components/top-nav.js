@@ -11,7 +11,10 @@ export default function TopHeaderNav() {
             <div className="me-2"> 
               <Icons.logo  className="h-8 w-8" />
             </div>
-            <h1 className="text-2xl font-semibold leading-3 tracking-tighter">notecraft</h1>
+            <div className='h-5 w-auto relative'>
+              <Icons.letter_logo className="h-full w-fit " />
+              <span className="text-2xl sr-only font-semibold leading-3 tracking-tighter">notecraft</span>
+            </div>
           </div>
           <div className="flex gap-4">
             <Button variant="secondary">Support</Button>
